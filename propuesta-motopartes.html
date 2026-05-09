@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Reputación Activa | Motopartes y Equipos Italika × Delta Kilo</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito Sans',sans-serif;background:#080C10;color:#E6EDF3;overflow:hidden;height:100vh}
+  h1,h2,h3,h4,.font-heading{font-family:'Rubik',sans-serif}
+
+  /* ── Deck ── */
+  .deck{width:100%;height:100vh;position:relative}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:48px;opacity:0;transform:translateX(60px);transition:opacity .45s ease, transform .45s ease;pointer-events:none}
+  .slide.active{opacity:1;transform:translateX(0);pointer-events:all}
+  .slide.exit{opacity:0;transform:translateX(-60px)}
+
+  /* ── Colors ── */
+  .teal{color:#00C8C8}.teal-bg{background:#00C8C8}
+  .grad{background:linear-gradient(135deg,#00C8C8,#0EA5E9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .grad-bg{background:linear-gradient(135deg,#00C8C8,#0EA5E9)}
+  .card{background:#0D1117;border:1px solid rgba(0,200,200,.18);border-radius:16px;transition:border-color .2s,box-shadow .2s}
+  .card:hover{border-color:rgba(0,200,200,.45);box-shadow:0 0 28px rgba(0,200,200,.12)}
+  .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,200,.1);border:1px solid rgba(0,200,200,.25);border-radius:999px;padding:4px 14px;font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#00C8C8}
+  .dot{width:8px;height:8px;border-radius:50%;background:#00C8C8;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  /* ── Nav ── */
+  #nav{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(13,17,23,.85);border:1px solid rgba(255,255,255,.07);border-radius:999px;padding:10px 24px;backdrop-filter:blur(12px);z-index:100}
+  .nav-btn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(0,200,200,.3);background:transparent;color:#00C8C8;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:1rem}
+  .nav-btn:hover{background:rgba(0,200,200,.15);border-color:#00C8C8}
+  #slide-counter{font-family:'Rubik',sans-serif;font-size:.8rem;color:#6e7681;min-width:52px;text-align:center}
+  .dot-nav{display:flex;gap:6px;align-items:center}
+  .dnav{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:all .25s}
+  .dnav.on{background:#00C8C8;width:18px;border-radius:3px}
+
+  /* ── Progress ── */
+  #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#00C8C8,#0EA5E9);transition:width .4s ease;z-index:200}
+
+  /* ── Slide-specific ── */
+  .max-slide{max-width:1040px;width:100%}
+
+  /* Star rating */
+  .stars{display:flex;gap:3px}
+  .star{color:#FBBF24;font-size:1.1rem}
+  .star.off{color:#374151}
+
+  /* Scroll within slide */
+  .slide-scroll{overflow-y:auto;max-height:calc(100vh - 140px);width:100%;scrollbar-width:thin;scrollbar-color:#00C8C8 transparent}
+  .slide-scroll::-webkit-scrollbar{width:4px}
+  .slide-scroll::-webkit-scrollbar-track{background:transparent}
+  .slide-scroll::-webkit-scrollbar-thumb{background:#00C8C8;border-radius:2px}
+
+  /* Calculator */
+  #suc-range{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:#21262D;outline:none}
+  #suc-range::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#00C8C8;cursor:pointer;border:3px solid #080C10;box-shadow:0 0 0 2px #00C8C8}
+
+  .chip{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,200,.08);border:1px solid rgba(0,200,200,.2);border-radius:8px;padding:6px 12px;font-size:.75rem;color:#00C8C8;font-family:'Rubik',sans-serif;font-weight:500}
+
+  /* Flow */
+  .flow-step{display:flex;gap:16px;align-items:flex-start}
+  .flow-icon{flex-shrink:0;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+  .flow-line{width:2px;height:32px;background:linear-gradient(180deg,rgba(0,200,200,.4),transparent);margin:0 21px}
+
+  @media (prefers-reduced-motion:reduce){.slide{transition:none}}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ════════════════════════════════════ SLIDES ════════════════════════════════════ -->
+<div class="deck" id="deck">
+
+  <!-- ── 1. COVER ── -->
+  <div class="slide active" id="s1">
+    <div class="max-slide flex flex-col items-center text-center gap-8">
+      <!-- Top logos -->
+      <div class="flex items-center gap-5 justify-center">
+        <div style="background:#D70000;border-radius:10px;padding:6px 14px">
+          <span style="font-family:'Rubik',sans-serif;font-weight:900;font-size:1rem;color:white;letter-spacing:2px">ITALIKA</span>
+        </div>
+        <div style="color:#374151;font-size:1.2rem">×</div>
+        <div class="flex items-center gap-2">
+          <div style="width:28px;height:28px;border-radius:7px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center">
+            <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <span style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.9rem">Delta Kilo <span style="color:#00C8C8">Soluciones</span></span>
+        </div>
+      </div>
+
+      <div>
+        <div class="badge mb-6"><span class="dot"></span> Propuesta Comercial 2026</div>
+        <h1 style="font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;line-height:1.1;color:white">
+          Sistema de<br/><span class="grad">Reputación Activa</span>
+        </h1>
+        <p style="font-size:1.15rem;color:#8B949E;margin-top:20px;max-width:580px;line-height:1.7">
+          Automatización inteligente para controlar, mejorar y escalar la presencia digital de <strong style="color:white">Motopartes y Equipos Italika</strong> en Google Maps.
+        </p>
+      </div>
+
+      <!-- Stats row -->
+      <div style="display:flex;gap:2px;border:1px solid rgba(0,200,200,.15);border-radius:16px;overflow:hidden;background:#0D1117">
+        <div style="padding:20px 32px;text-align:center;border-right:1px solid rgba(0,200,200,.1)">
+          <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.8rem;color:#00C8C8">5.0</div>
+          <div class="stars" style="justify-content:center;margin:4px 0">
+            <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+          <div style="font-size:.7rem;color:#6e7681">objetivo Google Maps</div>
+        </div>
+        <div style="padding:20px 32px;text-align:center;border-right:1px solid rgba(0,200,200,.1)">
+          <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.8rem;color:#00C8C8">24/7</div>
+          <div style="font-size:.75rem;color:white;margin:6px 0">IA activa</div>
+          <div style="font-size:.7rem;color:#6e7681">sin descanso</div>
+        </div>
+        <div style="padding:20px 32px;text-align:center">
+          <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.8rem;color:#00C8C8">$500</div>
+          <div style="font-size:.75rem;color:white;margin:6px 0">por sucursal</div>
+          <div style="font-size:.7rem;color:#6e7681">mensual</div>
+        </div>
+      </div>
+
+      <p style="color:#374151;font-size:.75rem;font-family:'Rubik',sans-serif">Usa las flechas del teclado o los botones para navegar</p>
+    </div>
+  </div>
+
+  <!-- ── 2. EL PROBLEMA ── -->
+  <div class="slide" id="s2">
+    <div class="max-slide">
+      <div class="badge mb-6">El contexto</div>
+      <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:white;margin-bottom:8px">
+        Lo que está en juego<br/><span class="grad">en cada reseña</span>
+      </h2>
+      <p style="color:#8B949E;margin-bottom:36px;max-width:600px">El 93% de los consumidores revisa reseñas antes de visitar un negocio local. Una reseña sin respuesta manda el mensaje equivocado.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        <div class="card" style="padding:24px;border-color:rgba(239,68,68,.2)">
+          <div style="width:44px;height:44px;border-radius:12px;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+            <svg width="22" height="22" fill="none" stroke="#EF4444" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          </div>
+          <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.05rem;color:white;margin-bottom:8px">Reseñas sin respuesta</div>
+          <p style="font-size:.82rem;color:#6e7681;line-height:1.6">Un cliente molesto que no recibe respuesta escala su queja. El silencio es percibido como indiferencia.</p>
+        </div>
+        <div class="card" style="padding:24px;border-color:rgba(239,68,68,.2)">
+          <div style="width:44px;height:44px;border-radius:12px;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+            <svg width="22" height="22" fill="none" stroke="#EF4444" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+          </div>
+          <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.05rem;color:white;margin-bottom:8px">Inconsistencia entre sucursales</div>
+          <p style="font-size:.82rem;color:#6e7681;line-height:1.6">Cada sucursal responde diferente — o no responde. El cliente percibe falta de profesionalismo y estándar.</p>
+        </div>
+        <div class="card" style="padding:24px;border-color:rgba(239,68,68,.2)">
+          <div style="width:44px;height:44px;border-radius:12px;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+            <svg width="22" height="22" fill="none" stroke="#EF4444" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.05rem;color:white;margin-bottom:8px">Sin datos ni visibilidad</div>
+          <p style="font-size:.82rem;color:#6e7681;line-height:1.6">No se sabe cuántas reseñas entran, cuál sucursal tiene más problemas, ni qué tipo de quejas son más frecuentes.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;background:linear-gradient(90deg,rgba(239,68,68,.06),transparent);border:1px solid rgba(239,68,68,.15);border-radius:14px;padding:16px 20px;display:flex;gap:12px;align-items:center">
+        <svg width="20" height="20" fill="none" stroke="#EF4444" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <p style="font-size:.82rem;color:#9CA3AF"><strong style="color:white">El verdadero costo:</strong> Un punto menos en calificación de Google puede traducirse en una caída del 5–9% en clientes nuevos. En una red multi-sucursal, ese número se multiplica.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. LA SOLUCIÓN ── -->
+  <div class="slide" id="s3">
+    <div class="max-slide">
+      <div class="badge mb-6">La solución</div>
+      <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:white;margin-bottom:6px">
+        <span class="grad">Reputación Activa</span><br/>no solo gestión de reseñas
+      </h2>
+      <p style="color:#8B949E;margin-bottom:32px">Un sistema completo que opera desde <strong style="color:white">La Garra CRM + Automatizaciones + IA Jaguar</strong></p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <!-- Left: modules -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="card" style="padding:16px 20px;display:flex;gap:14px;align-items:center">
+            <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="18" height="18" fill="none" stroke="#080C10" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            </div>
+            <div>
+              <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.95rem">Monitoreo Inteligente</div>
+              <div style="font-size:.75rem;color:#6e7681">Alertas en tiempo real · Clasificación por tipo</div>
+            </div>
+          </div>
+          <div class="card" style="padding:16px 20px;display:flex;gap:14px;align-items:center">
+            <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="18" height="18" fill="none" stroke="#080C10" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            </div>
+            <div>
+              <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.95rem">Respuestas con IA</div>
+              <div style="font-size:.75rem;color:#6e7681">Agente entrenado · Tono Italika · 24/7</div>
+            </div>
+          </div>
+          <div class="card" style="padding:16px 20px;display:flex;gap:14px;align-items:center">
+            <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="18" height="18" fill="none" stroke="#080C10" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8H3m2 0h.01M12 8h.01"/></svg>
+            </div>
+            <div>
+              <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.95rem">QR + Captación Activa</div>
+              <div style="font-size:.75rem;color:#6e7681">Filtro satisfechos/insatisfechos · SEO local</div>
+            </div>
+          </div>
+          <div class="card" style="padding:16px 20px;display:flex;gap:14px;align-items:center">
+            <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="18" height="18" fill="none" stroke="#080C10" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <div>
+              <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.95rem">Reporte Mensual</div>
+              <div style="font-size:.75rem;color:#6e7681">Sentimiento · Métricas · Recomendaciones</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: differentiator -->
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="background:linear-gradient(135deg,rgba(0,200,200,.08),rgba(14,165,233,.05));border:1px solid rgba(0,200,200,.25);border-radius:16px;padding:28px;flex:1;display:flex;flex-direction:column;justify-content:center">
+            <div style="font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;letter-spacing:.1em;color:#00C8C8;text-transform:uppercase;margin-bottom:12px">Diferencial clave</div>
+            <p style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.4rem;color:white;line-height:1.4;margin-bottom:16px">
+              "No solo gestionamos reseñas. <span class="grad">Controlamos la percepción digital</span> de la marca."
+            </p>
+            <p style="font-size:.83rem;color:#8B949E;line-height:1.6">Convertimos clientes satisfechos en promotores activos y neutralizamos crisis antes de que impacten la reputación global.</p>
+            <div style="margin-top:20px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span style="font-size:.8rem;color:#C9D1D9">Estandarización de marca en toda la red</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span style="font-size:.8rem;color:#C9D1D9">Detección temprana de crisis</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span style="font-size:.8rem;color:#C9D1D9">Inteligencia comparativa entre sucursales</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span style="font-size:.8rem;color:#C9D1D9">SEO local potenciado en toda la red</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 4. MÓDULO 1: Monitoreo ── -->
+  <div class="slide" id="s4">
+    <div class="max-slide">
+      <div style="display:flex;gap:8px;margin-bottom:24px">
+        <div class="badge">Módulo 1 de 5</div>
+      </div>
+      <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Monitoreo <span class="grad">Inteligente</span> de Reseñas</h2>
+      <p style="color:#8B949E;margin-bottom:32px">Visibilidad total de lo que dicen tus clientes, en tiempo real.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="card" style="padding:20px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:9px;background:rgba(0,200,200,.1);border:1px solid rgba(0,200,200,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div>
+                <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:4px">Seguimiento en tiempo real</div>
+                <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Cada reseña nueva en Google Maps se captura al instante, sin esperar revisiones manuales.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="padding:20px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:9px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="16" height="16" fill="none" stroke="#EF4444" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+              </div>
+              <div>
+                <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:4px">Alertas de reseñas negativas</div>
+                <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Notificación inmediata al correo cuando entra una reseña de 1–3 estrellas. Reacción antes de crisis.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="padding:20px">
+            <div style="display:flex;gap:12px;align-items:flex-start">
+              <div style="width:36px;height:36px;border-radius:9px;background:rgba(0,200,200,.1);border:1px solid rgba(0,200,200,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"/></svg>
+              </div>
+              <div>
+                <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:4px">Clasificación inteligente</div>
+                <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Categorización automática por tipo: servicio, producto, tiempo de espera, precio, atención.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mock alert -->
+        <div class="card" style="padding:24px">
+          <div style="font-size:.7rem;color:#6e7681;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Vista previa — Alerta de reseña negativa</div>
+          <div style="background:#161B22;border-radius:10px;padding:16px;border:1px solid rgba(239,68,68,.15)">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+              <div>
+                <div style="font-weight:600;color:white;font-size:.9rem">Motopartes Italika — Tepic Centro</div>
+                <div class="stars" style="margin-top:4px">
+                  <span class="star">★</span><span class="star off">★</span><span class="star off">★</span><span class="star off">★</span><span class="star off">★</span>
+                </div>
+              </div>
+              <div style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:6px;padding:3px 8px;font-size:.65rem;font-family:'Rubik',sans-serif;color:#EF4444;font-weight:600">ALERTA</div>
+            </div>
+            <p style="font-size:.8rem;color:#8B949E;line-height:1.5;margin-bottom:12px">"Fui a buscar una refacción y me dijeron que no había. No tienen buena atención al cliente, tardaron mucho..."</p>
+            <div style="display:flex;gap:8px">
+              <span class="chip">⚡ Tipo: atención</span>
+              <span class="chip">📍 Tepic Centro</span>
+            </div>
+            <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:6px">
+              <div style="width:6px;height:6px;border-radius:50%;background:#00C8C8;animation:pulse 2s infinite"></div>
+              <span style="font-size:.72rem;color:#00C8C8">IA preparando respuesta...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 5. MÓDULO 2: IA ── -->
+  <div class="slide" id="s5">
+    <div class="max-slide">
+      <div class="badge mb-6">Módulo 2 de 5</div>
+      <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Respuestas Automáticas <span class="grad">con IA</span></h2>
+      <p style="color:#8B949E;margin-bottom:32px">El agente "Asistente de Motopartes" responde con el tono y calidad de tu mejor ejecutivo — a cualquier hora.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="card" style="padding:18px 20px">
+            <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Agente configurado para Italika</div>
+            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Entrenado con el tono, valores y productos específicos de Motopartes. No respuestas genéricas.</p>
+          </div>
+          <div class="card" style="padding:18px 20px">
+            <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Respuesta en minutos, no días</div>
+            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Google premia los negocios que responden rápido. Mejor tiempo de respuesta = mejor posicionamiento.</p>
+          </div>
+          <div class="card" style="padding:18px 20px">
+            <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Priorización de negativas</div>
+            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Las reseñas de 1–3 estrellas se atienden primero y con mayor cuidado para revertir la percepción.</p>
+          </div>
+          <div style="background:rgba(0,200,200,.05);border:1px solid rgba(0,200,200,.15);border-radius:12px;padding:14px 16px">
+            <div style="font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#00C8C8;margin-bottom:6px">Incluido en instalación</div>
+            <p style="font-size:.8rem;color:#C9D1D9">Aviso automático por correo electrónico cuando se recibe una reseña nueva en cualquier sucursal.</p>
+          </div>
+        </div>
+
+        <!-- Conversation mock -->
+        <div class="card" style="padding:20px">
+          <div style="font-size:.7rem;color:#6e7681;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Ejemplo de respuesta con IA</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <!-- Positive review -->
+            <div style="background:#161B22;border-radius:10px;padding:14px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                <div style="font-weight:600;color:white;font-size:.85rem">Carlos M.</div>
+                <div class="stars" style="font-size:.85rem"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+              </div>
+              <p style="font-size:.78rem;color:#8B949E">"Muy buen servicio, encontré la refacción que buscaba y a buen precio."</p>
+            </div>
+            <!-- IA response -->
+            <div style="background:rgba(0,200,200,.06);border:1px solid rgba(0,200,200,.2);border-radius:10px;padding:14px">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+                <div style="width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center">
+                  <svg width="10" height="10" fill="white" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <span style="font-size:.7rem;color:#00C8C8;font-family:'Rubik',sans-serif;font-weight:600">Motopartes y Equipos Italika · Respuesta IA</span>
+              </div>
+              <p style="font-size:.78rem;color:#C9D1D9;line-height:1.6">¡Gracias Carlos! 🙏 Nos alegra que hayas encontrado lo que necesitabas. En <strong>Motopartes y Equipos Italika</strong> siempre buscamos tener el mejor inventario para ti. ¡Te esperamos pronto! 🏍️</p>
+            </div>
+            <!-- Negative example -->
+            <div style="background:#161B22;border-radius:10px;padding:14px;border:1px solid rgba(239,68,68,.1)">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+                <div style="font-weight:600;color:white;font-size:.85rem">Ana G.</div>
+                <div class="stars" style="font-size:.85rem"><span class="star">★</span><span class="star">★</span><span class="star off">★</span><span class="star off">★</span><span class="star off">★</span></div>
+              </div>
+              <p style="font-size:.78rem;color:#8B949E">"Tardaron mucho en atenderme y no tenían lo que buscaba."</p>
+            </div>
+            <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:14px">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+                <div style="width:20px;height:20px;border-radius:5px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center">
+                  <svg width="10" height="10" fill="white" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <span style="font-size:.7rem;color:#00C8C8;font-family:'Rubik',sans-serif;font-weight:600">Motopartes y Equipos Italika · Respuesta IA</span>
+              </div>
+              <p style="font-size:.78rem;color:#C9D1D9;line-height:1.6">Ana, lamentamos mucho tu experiencia. Eso no refleja el nivel de servicio que buscamos ofrecer. Por favor contáctanos directamente al [teléfono] para atenderte de manera personalizada. ¡Queremos recuperar tu confianza!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 6. MÓDULO 3: QR ── -->
+  <div class="slide" id="s6">
+    <div class="max-slide">
+      <div class="badge mb-6">Módulo 3 de 5</div>
+      <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Captación Activa <span class="grad">QR + Filtro</span></h2>
+      <p style="color:#8B949E;margin-bottom:32px">Genera más reseñas positivas y canaliza las negativas antes de que sean públicas.</p>
+
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start">
+        <!-- Flow -->
+        <div>
+          <div class="card" style="padding:24px">
+            <div style="font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#00C8C8;margin-bottom:18px">Flujo del sistema QR</div>
+
+            <div class="flow-step">
+              <div class="flow-icon" style="background:linear-gradient(135deg,#00C8C8,#0EA5E9)">
+                <svg width="20" height="20" fill="none" stroke="#080C10" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8H3m2 0h.01M12 8h.01"/></svg>
+              </div>
+              <div>
+                <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;font-size:.9rem">Cliente escanea QR en sucursal</div>
+                <p style="font-size:.78rem;color:#6e7681;margin-top:2px">QR físico en mostrador o ticket de compra</p>
+              </div>
+            </div>
+            <div class="flow-line"></div>
+
+            <div class="flow-step">
+              <div class="flow-icon" style="background:#161B22;border:1px solid rgba(0,200,200,.3)">
+                <svg width="20" height="20" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              </div>
+              <div>
+                <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;font-size:.9rem">¿Cómo fue tu experiencia?</div>
+                <p style="font-size:.78rem;color:#6e7681;margin-top:2px">Encuesta de satisfacción rápida (1 pregunta)</p>
+              </div>
+            </div>
+            <div class="flow-line"></div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:14px">
+                <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#22C55E;font-size:.85rem;margin-bottom:4px">✓ Satisfecho</div>
+                <p style="font-size:.75rem;color:#6e7681">Redirigido a dejar reseña en Google Maps</p>
+                <div style="margin-top:8px;font-size:.7rem;color:#22C55E;font-weight:600">→ Reseña pública ⭐⭐⭐⭐⭐</div>
+              </div>
+              <div style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:14px">
+                <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#EF4444;font-size:.85rem;margin-bottom:4px">✗ Insatisfecho</div>
+                <p style="font-size:.75rem;color:#6e7681">Canalizado a atención interna del negocio</p>
+                <div style="margin-top:8px;font-size:.7rem;color:#EF4444;font-weight:600">→ Queja interna 🔒</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefits -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="card" style="padding:20px">
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:2rem;color:#00C8C8">QR</div>
+            <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin:4px 0 8px">creado por sucursal</div>
+            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Código personalizado con logo de Motopartes Italika. Incluido en la instalación.</p>
+          </div>
+          <div class="card" style="padding:20px;border-color:rgba(34,197,94,.2)">
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:2rem;color:#22C55E">+⭐</div>
+            <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin:4px 0 8px">Más reseñas positivas</div>
+            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Al activar el sistema, clientes satisfechos que antes no dejaban reseña ahora son dirigidos activamente.</p>
+          </div>
+          <div class="card" style="padding:20px;border-color:rgba(14,165,233,.2)">
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:2rem;color:#0EA5E9">SEO</div>
+            <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin:4px 0 8px">Posicionamiento local</div>
+            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Más reseñas recientes = mejor ranking en búsquedas locales de Google.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 7. LOS DOS QR ── -->
+  <div class="slide" id="s7">
+    <div class="max-slide">
+      <div class="badge mb-6">Herramientas físicas</div>
+      <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Los dos QR que <span class="grad">activan el sistema</span></h2>
+      <p style="color:#8B949E;margin-bottom:28px">Cada QR tiene un rol distinto. Ambos conectados a notificaciones por correo para el equipo que definas.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+
+        <!-- QR Google Maps -->
+        <div style="background:#0D1117;border:1px solid rgba(0,200,200,.2);border-radius:20px;padding:28px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px">
+          <div class="badge">1 por sucursal</div>
+          <!-- Google logo -->
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:4px">
+            <svg width="28" height="28" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            <span style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1rem;color:white">Google Maps</span>
+          </div>
+
+          <!-- QR image -->
+          <div style="background:white;border-radius:14px;padding:14px;display:inline-block;box-shadow:0 0 30px rgba(0,200,200,.15)">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://g.page/r/motopartes-italika-review&color=000000&bgcolor=ffffff&margin=0" width="160" height="160" alt="QR Google Maps Motopartes" style="display:block;border-radius:6px"/>
+          </div>
+
+          <div>
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:1rem;margin-bottom:6px">QR de Reseña Google</div>
+            <p style="font-size:.8rem;color:#8B949E;line-height:1.6">El cliente lo escanea y es dirigido directamente a dejar su reseña en Google Maps de <strong style="color:white">esa sucursal específica</strong>.</p>
+          </div>
+
+          <div style="width:100%;display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;align-items:center;gap:8px;background:#161B22;border-radius:8px;padding:8px 12px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Personalizado por sucursal</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;background:#161B22;border-radius:8px;padding:8px 12px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Notificación por correo al recibir reseña</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;background:#161B22;border-radius:8px;padding:8px 12px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Incluido en la implementación</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- QR Chat Widget -->
+        <div style="background:#0D1117;border:1px solid rgba(251,191,36,.25);border-radius:20px;padding:28px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px">
+          <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:999px;padding:4px 14px;font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;color:#FBBF24;text-transform:uppercase;letter-spacing:.08em">1 para toda la red</div>
+
+          <!-- Motopartes logo area -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin-top:4px">
+            <div style="background:#D70000;border-radius:7px;padding:4px 12px">
+              <span style="font-family:'Rubik',sans-serif;font-weight:900;font-size:.85rem;color:white;letter-spacing:2px">ITALIKA</span>
+            </div>
+            <span style="font-size:.7rem;color:#6e7681;font-family:'Rubik',sans-serif">Motopartes y Equipos</span>
+          </div>
+
+          <!-- QR image -->
+          <div style="background:white;border-radius:14px;padding:14px;display:inline-block;box-shadow:0 0 30px rgba(251,191,36,.15)">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://chat.motopartesitalika.com/satisfaccion&color=000000&bgcolor=ffffff&margin=0" width="160" height="160" alt="QR Chat Widget Motopartes" style="display:block;border-radius:6px"/>
+          </div>
+
+          <div>
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:1rem;margin-bottom:6px">QR Chat de Satisfacción</div>
+            <p style="font-size:.8rem;color:#8B949E;line-height:1.6">Abre un <strong style="color:white">chat widget</strong> de satisfacción del cliente. Disponible para todas las sucursales con un solo QR universal.</p>
+          </div>
+
+          <div style="width:100%;display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;align-items:center;gap:8px;background:#161B22;border-radius:8px;padding:8px 12px">
+              <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Un QR para toda la red de sucursales</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;background:#161B22;border-radius:8px;padding:8px 12px">
+              <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Notificación por correo al equipo</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;background:#161B22;border-radius:8px;padding:8px 12px">
+              <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Módulo opcional add-on</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email notification note -->
+      <div style="margin-top:18px;background:rgba(0,200,200,.04);border:1px solid rgba(0,200,200,.15);border-radius:12px;padding:13px 18px;display:flex;gap:10px;align-items:center">
+        <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        <p style="font-size:.8rem;color:#8B949E"><strong style="color:white">Notificaciones por correo:</strong> Ambos QR pueden estar conectados a cualquier miembro del equipo que necesites — gerente, encargado de sucursal, área de marketing, etc.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 8. MÓDULO 4: Reporte Mensual ── -->
+  <div class="slide" id="s8r">
+    <div class="max-slide">
+      <div class="badge mb-6">Módulo 4 de 4</div>
+      <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Reporte Mensual <span class="grad">de Reputación</span></h2>
+      <p style="color:#8B949E;margin-bottom:28px">Enviado automáticamente cada mes al equipo. Sin que nadie tenga que generarlo manualmente.</p>
+
+      <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="card" style="padding:22px">
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;margin-bottom:14px">¿Qué incluye cada reporte?</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:8px;background:rgba(0,200,200,.1);border:1px solid rgba(0,200,200,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="15" height="15" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                </div>
+                <span style="font-size:.83rem;color:#C9D1D9">Calificación promedio por sucursal</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:8px;background:rgba(0,200,200,.1);border:1px solid rgba(0,200,200,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="15" height="15" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                </div>
+                <span style="font-size:.83rem;color:#C9D1D9">Número de reseñas nuevas del mes</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:8px;background:rgba(0,200,200,.1);border:1px solid rgba(0,200,200,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="15" height="15" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                <span style="font-size:.83rem;color:#C9D1D9">% positivas vs negativas</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:8px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="15" height="15" fill="none" stroke="#EF4444" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+                </div>
+                <span style="font-size:.83rem;color:#C9D1D9">Principales quejas detectadas</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:8px;background:rgba(0,200,200,.1);border:1px solid rgba(0,200,200,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <svg width="15" height="15" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                </div>
+                <span style="font-size:.83rem;color:#C9D1D9">Recomendaciones estratégicas</span>
+              </div>
+            </div>
+          </div>
+          <div style="background:rgba(0,200,200,.05);border:1px solid rgba(0,200,200,.15);border-radius:12px;padding:13px 16px;display:flex;gap:10px;align-items:center">
+            <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <p style="font-size:.8rem;color:#8B949E">Enviado automáticamente por correo a quien definas del equipo.</p>
+          </div>
+        </div>
+
+        <!-- Mock reporte -->
+        <div class="card" style="padding:20px">
+          <div style="font-size:.7rem;color:#6e7681;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Vista previa — Resumen del mes</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+            <div style="background:#161B22;border-radius:10px;padding:14px;text-align:center">
+              <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.7rem;color:#00C8C8">4.8</div>
+              <div class="stars" style="justify-content:center;margin:4px 0"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star" style="font-size:.9rem;opacity:.6">★</span></div>
+              <div style="font-size:.7rem;color:#6e7681">Calificación prom.</div>
+            </div>
+            <div style="background:#161B22;border-radius:10px;padding:14px;text-align:center">
+              <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.7rem;color:#22C55E">+24</div>
+              <div style="font-size:.75rem;color:white;margin:4px 0">reseñas</div>
+              <div style="font-size:.7rem;color:#6e7681">este mes</div>
+            </div>
+            <div style="background:#161B22;border-radius:10px;padding:14px;text-align:center">
+              <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.7rem;color:#00C8C8">87%</div>
+              <div style="font-size:.7rem;color:#6e7681;margin-top:4px">Positivas</div>
+            </div>
+            <div style="background:#161B22;border-radius:10px;padding:14px;text-align:center">
+              <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.7rem;color:#EF4444">3</div>
+              <div style="font-size:.7rem;color:#6e7681;margin-top:4px">Quejas detectadas</div>
+            </div>
+          </div>
+          <div style="background:rgba(0,200,200,.06);border:1px solid rgba(0,200,200,.2);border-radius:10px;padding:12px">
+            <div style="font-size:.72rem;font-family:'Rubik',sans-serif;font-weight:600;color:#00C8C8;margin-bottom:5px">Recomendación del mes</div>
+            <p style="font-size:.77rem;color:#8B949E;line-height:1.5">2 sucursales con calificación menor a 4.5 requieren atención prioritaria en tiempos de espera.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 8. MÓDULO OPCIONAL: Chat ── -->
+  <div class="slide" id="s8">
+    <div class="max-slide">
+      <div style="display:flex;gap:8px;margin-bottom:24px;align-items:center">
+        <div class="badge">Módulo Opcional</div>
+        <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:999px;padding:4px 12px;font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;color:#FBBF24">Add-on disponible</div>
+      </div>
+      <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Chat de Satisfacción <span class="grad">activado por QR</span></h2>
+      <p style="color:#8B949E;margin-bottom:28px">Un canal exclusivo para conocer la experiencia real del cliente — sin ventas, sin presión. Solo escuchar y mejorar.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="card" style="padding:20px;border-color:rgba(251,191,36,.15)">
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;margin-bottom:12px">¿Cómo funciona este módulo?</div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:flex-start;gap:10px">
+                <div style="width:28px;height:28px;border-radius:7px;background:rgba(251,191,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+                  <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v1m6.364 1.636l-.707.707M20 12h-1M17.657 17.657l-.707-.707M12 20v-1M6.343 17.657l-.707.707M4 12H3M6.343 6.343l.707.707"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:.85rem;font-weight:600;color:white">Acceso por escaneo de QR</div>
+                  <p style="font-size:.77rem;color:#6e7681;line-height:1.5">El cliente escanea el QR de Motopartes Italika desde cualquier sucursal y se abre el chat widget directamente en su teléfono.</p>
+                </div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:10px">
+                <div style="width:28px;height:28px;border-radius:7px;background:rgba(251,191,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+                  <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:.85rem;font-weight:600;color:white">Solo satisfacción — nada más</div>
+                  <p style="font-size:.77rem;color:#6e7681;line-height:1.5">El chat pregunta exclusivamente sobre la experiencia del cliente: atención, tiempo de espera y calidad del servicio. Sin ventas ni redirecciones.</p>
+                </div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:10px">
+                <div style="width:28px;height:28px;border-radius:7px;background:rgba(251,191,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+                  <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:.85rem;font-weight:600;color:white">Notificación por correo al equipo</div>
+                  <p style="font-size:.77rem;color:#6e7681;line-height:1.5">Cada respuesta genera una alerta automática al equipo que designes. Respuesta rápida ante clientes insatisfechos.</p>
+                </div>
+              </div>
+              <div style="display:flex;align-items:flex-start;gap:10px">
+                <div style="width:28px;height:28px;border-radius:7px;background:rgba(251,191,36,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+                  <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:.85rem;font-weight:600;color:white">Un QR para toda la red</div>
+                  <p style="font-size:.77rem;color:#6e7681;line-height:1.5">El mismo QR funciona en todas las sucursales. Los resultados se consolidan en el reporte mensual por ubicación.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.2);border-radius:12px;padding:14px 16px">
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#FBBF24;margin-bottom:4px">Precio del módulo opcional</div>
+            <p style="font-size:.8rem;color:#8B949E">A cotizar según número de sucursales. Podemos presentar opciones en la siguiente reunión.</p>
+          </div>
+        </div>
+
+        <!-- Visual: chat widget mockup -->
+        <div class="card" style="padding:20px">
+          <div style="font-size:.7rem;color:#6e7681;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Vista previa — Widget de satisfacción</div>
+          <div style="background:#161B22;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <!-- Header del widget -->
+            <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px">
+              <div style="width:32px;height:32px;border-radius:50%;background:rgba(251,191,36,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              </div>
+              <div>
+                <div style="font-size:.78rem;font-weight:700;color:white">Motopartes Italika</div>
+                <div style="font-size:.68rem;color:#6e7681">Encuesta de satisfacción · 2 min</div>
+              </div>
+            </div>
+            <!-- Mensaje bot -->
+            <div style="display:flex;gap:8px;align-items:flex-start">
+              <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#FBBF24,#F59E0B);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="11" height="11" fill="white" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div style="background:#21262D;border-radius:10px 10px 10px 2px;padding:10px 14px;max-width:80%">
+                <p style="font-size:.77rem;color:#C9D1D9;line-height:1.5">Hola 👋 Gracias por visitarnos. ¿Cómo calificarías la atención que recibiste hoy?</p>
+              </div>
+            </div>
+            <!-- Opciones de calificación -->
+            <div style="display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap">
+              <div style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:8px;padding:7px 12px;font-size:.72rem;color:#22C55E;cursor:pointer;text-align:center">😊 Excelente</div>
+              <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:8px;padding:7px 12px;font-size:.72rem;color:#FBBF24;cursor:pointer;text-align:center">😐 Regular</div>
+              <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:7px 12px;font-size:.72rem;color:#EF4444;cursor:pointer;text-align:center">😟 Mejorable</div>
+            </div>
+            <!-- Respuesta -->
+            <div style="display:flex;gap:8px;align-items:flex-start">
+              <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#FBBF24,#F59E0B);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                <svg width="11" height="11" fill="white" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div style="background:#21262D;border-radius:10px 10px 10px 2px;padding:10px 14px;max-width:80%">
+                <p style="font-size:.77rem;color:#C9D1D9;line-height:1.5">¿Hay algo que podamos mejorar para tu próxima visita? Tu opinión nos ayuda a crecer. 🙏</p>
+              </div>
+            </div>
+          </div>
+          <!-- Nota correo -->
+          <div style="margin-top:12px;background:rgba(0,200,200,.05);border:1px solid rgba(0,200,200,.15);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px">
+            <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <span style="font-size:.74rem;color:#8B949E">Cada respuesta genera notificación al equipo designado vía correo</span>
+          </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 9. INVERSIÓN ── -->
+  <div class="slide" id="s9">
+    <div class="max-slide">
+      <div class="badge mb-6">Modelo de Inversión</div>
+      <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:white;margin-bottom:6px">Claro, escalable <span class="grad">y sin sorpresas</span></h2>
+      <p style="color:#8B949E;margin-bottom:28px">Precio por sucursal. Pagas exactamente por lo que activas.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
+        <!-- Instalación -->
+        <div class="card" style="padding:24px;border-color:rgba(34,197,94,.3);position:relative;overflow:hidden">
+          <div style="position:absolute;top:10px;right:10px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35);border-radius:999px;padding:3px 10px;font-size:.65rem;font-family:'Rubik',sans-serif;font-weight:700;color:#22C55E;text-transform:uppercase;letter-spacing:.08em">Sin costo</div>
+          <div style="font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#6e7681;margin-bottom:12px">Por sucursal</div>
+          <div style="font-family:'Rubik',sans-serif;font-weight:900;font-size:2.6rem;color:#22C55E">GRATIS</div>
+          <div style="color:#22C55E;font-family:'Rubik',sans-serif;font-weight:600;margin:6px 0 14px">Implementación incluida</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Agente IA entrenado para contestar reseñas</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Automatización de aviso por correo (nueva reseña)</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Reporte mensual programado</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">QR personalizado para solicitar reseña</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensualidad -->
+        <div style="background:linear-gradient(135deg,rgba(0,200,200,.08),rgba(14,165,233,.05));border:1px solid rgba(0,200,200,.35);border-radius:16px;padding:24px;position:relative;overflow:hidden">
+          <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(0,200,200,.08);pointer-events:none"></div>
+          <div style="font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#00C8C8;margin-bottom:12px">Mensual por sucursal</div>
+          <div style="font-family:'Rubik',sans-serif;font-weight:900;font-size:2.6rem;color:white">$500</div>
+          <div style="color:#00C8C8;font-family:'Rubik',sans-serif;font-weight:600;margin:6px 0 14px">Operación continua</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">IA activa 24/7 respondiendo reseñas</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Monitoreo y alertas activas</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Dashboard y reportes</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Soporte y ajustes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Opcional -->
+        <div class="card" style="padding:24px;border-color:rgba(251,191,36,.2)">
+          <div style="font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#FBBF24;margin-bottom:12px">Módulo adicional</div>
+          <div style="font-family:'Rubik',sans-serif;font-weight:900;font-size:2rem;color:white">A cotizar</div>
+          <div style="color:#FBBF24;font-family:'Rubik',sans-serif;font-weight:600;margin:6px 0 14px">Chat Conversacional</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Atención conversacional por Web / chat en sitio</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Análisis profundo de clientes</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:7px">
+              <svg width="14" height="14" fill="none" stroke="#FBBF24" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:2px"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span style="font-size:.78rem;color:#C9D1D9">Captura de leads y seguimiento</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROI note -->
+      <div style="background:rgba(0,200,200,.04);border:1px solid rgba(0,200,200,.15);border-radius:12px;padding:14px 18px;display:flex;gap:12px;align-items:center">
+        <svg width="18" height="18" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <p style="font-size:.8rem;color:#8B949E"><strong style="color:white">¿Vale la inversión?</strong> Un punto más en calificación Google puede aumentar visitas entre 5–9% por sucursal. En una red de 5 sucursales eso representa decenas de clientes nuevos por mes — bien por encima del costo del sistema.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 10. CALCULADORA ── -->
+  <div class="slide" id="s10">
+    <div class="max-slide">
+      <div class="badge mb-6">Calculadora interactiva</div>
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:white;margin-bottom:6px">¿Cuántas sucursales <span class="grad">quieres activar?</span></h2>
+      <p style="color:#8B949E;margin-bottom:32px">Mueve el slider y ve la inversión en tiempo real.</p>
+
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:start">
+        <!-- Calculator -->
+        <div class="card" style="padding:28px">
+          <div style="margin-bottom:20px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <span style="font-family:'Rubik',sans-serif;font-weight:600;color:white">Número de sucursales</span>
+              <span id="suc-num" style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.6rem;color:#00C8C8">3</span>
+            </div>
+            <input type="range" id="suc-range" min="1" max="20" value="3" oninput="calcUpdate(this.value)"/>
+            <div style="display:flex;justify-content:space-between;margin-top:6px">
+              <span style="font-size:.7rem;color:#374151">1 sucursal</span>
+              <span style="font-size:.7rem;color:#374151">20 sucursales</span>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:.75rem;color:#22C55E">Implementación</div>
+                <div style="font-size:.7rem;color:#374151"><span id="suc-num2">3</span> sucursales configuradas</div>
+              </div>
+              <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.3rem;color:#22C55E" id="inst-total">GRATIS</div>
+            </div>
+            <div style="background:linear-gradient(135deg,rgba(0,200,200,.06),rgba(14,165,233,.04));border:1px solid rgba(0,200,200,.2);border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:.75rem;color:#00C8C8">Mensualidad</div>
+                <div style="font-size:.7rem;color:#374151">$500 × <span id="suc-num3">3</span> sucursales / mes</div>
+              </div>
+              <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.3rem;color:#00C8C8" id="mens-total">$1,500/mes</div>
+            </div>
+            <div style="background:#161B22;border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:.75rem;color:#6e7681">Inversión año 1 (12 meses · implementación sin costo)</div>
+              </div>
+              <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.3rem;color:white" id="anual-total">$18,000</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefit ladder -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="background:rgba(0,200,200,.05);border:1px solid rgba(0,200,200,.15);border-radius:14px;padding:20px">
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;margin-bottom:12px">Lo que obtienes con <span id="suc-ben" class="teal">3</span> sucursales activadas</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <svg width="15" height="15" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span style="font-size:.8rem;color:#C9D1D9"><span id="suc-ben2" class="teal font-bold">3</span> agentes IA activos 24/7</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <svg width="15" height="15" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span style="font-size:.8rem;color:#C9D1D9"><span id="suc-ben3" class="teal font-bold">3</span> QR personalizados</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <svg width="15" height="15" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span style="font-size:.8rem;color:#C9D1D9">Panel centralizado de toda la red</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <svg width="15" height="15" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <span style="font-size:.8rem;color:#C9D1D9">Reporte mensual unificado</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="padding:18px">
+            <div style="font-size:.72rem;color:#6e7681;margin-bottom:8px">Comparativa con gestión manual</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:.8rem;color:#8B949E">Empleado dedicado a reseñas</span>
+                <span style="font-family:'Rubik',sans-serif;font-weight:700;color:#EF4444;font-size:.9rem">~$8,000+/mes</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:.8rem;color:#8B949E">Sistema Delta Kilo (<span id="suc-comp">3</span> suc.)</span>
+                <span style="font-family:'Rubik',sans-serif;font-weight:700;color:#00C8C8;font-size:.9rem" id="comp-price">$1,500/mes</span>
+              </div>
+            </div>
+            <div style="margin-top:10px;height:1px;background:rgba(255,255,255,.05)"></div>
+            <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:.8rem;font-family:'Rubik',sans-serif;font-weight:600;color:white">Ahorro mensual estimado</span>
+              <span style="font-family:'Rubik',sans-serif;font-weight:800;color:#22C55E" id="saving">~$6,500/mes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 11. RESULTADOS ESPERADOS ── -->
+  <div class="slide" id="s11">
+    <div class="max-slide">
+      <div class="badge mb-6">Resultados esperados</div>
+      <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:white;margin-bottom:6px">Lo que cambia cuando<br/><span class="grad">el sistema trabaja por ti</span></h2>
+      <p style="color:#8B949E;margin-bottom:32px">Beneficios acumulables conforme más sucursales se integran al sistema.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+        <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" fill="none" stroke="#080C10" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          </div>
+          <div>
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.4rem;color:#00C8C8">Mayor calificación</div>
+            <p style="font-size:.82rem;color:#8B949E;margin-top:4px;line-height:1.5">Más reseñas positivas generadas + reseñas negativas canalizadas internamente = calificación promedio al alza en todas las fichas.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" fill="none" stroke="#080C10" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+          </div>
+          <div>
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.4rem;color:#00C8C8">Más clientes nuevos</div>
+            <p style="font-size:.82rem;color:#8B949E;margin-top:4px;line-height:1.5">Una calificación más alta en Google Maps significa mejor posición en búsquedas locales → más personas encontrando y visitando tus sucursales.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" fill="none" stroke="#080C10" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div>
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.4rem;color:#00C8C8">Marca protegida</div>
+            <p style="font-size:.82rem;color:#8B949E;margin-top:4px;line-height:1.5">Cada reseña negativa tiene respuesta rápida y profesional. La percepción pública de Italika se controla, no se deja al azar.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" fill="none" stroke="#080C10" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <div>
+            <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.4rem;color:#00C8C8">Datos para decidir</div>
+            <p style="font-size:.82rem;color:#8B949E;margin-top:4px;line-height:1.5">Identificas qué sucursales necesitan intervención, qué problemas son recurrentes y dónde focalizar mejoras operativas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 12. CIERRE / CTA ── -->
+  <div class="slide" id="s12">
+    <div class="max-slide flex flex-col items-center text-center" style="gap:0">
+      <div class="badge mb-8"><span class="dot"></span> Próximo paso</div>
+
+      <h2 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:white;line-height:1.1;margin-bottom:16px">
+        ¿Cuántas sucursales<br/><span class="grad">empezamos a activar?</span>
+      </h2>
+
+      <p style="color:#8B949E;font-size:1rem;max-width:560px;line-height:1.7;margin-bottom:36px">
+        El sistema ya está operando con resultados en la sucursal piloto. Escalar al resto de la red es el siguiente paso natural.
+      </p>
+
+      <!-- Next steps -->
+      <div style="display:flex;gap:16px;margin-bottom:36px;flex-wrap:wrap;justify-content:center">
+        <div style="background:#0D1117;border:1px solid rgba(0,200,200,.2);border-radius:14px;padding:18px 22px;text-align:left;min-width:200px">
+          <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#00C8C8;font-size:1.6rem;margin-bottom:4px">01</div>
+          <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Definir sucursales</div>
+          <p style="font-size:.78rem;color:#6e7681">¿Cuántas y cuáles quieren activar primero?</p>
+        </div>
+        <div style="background:#0D1117;border:1px solid rgba(0,200,200,.2);border-radius:14px;padding:18px 22px;text-align:left;min-width:200px">
+          <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#00C8C8;font-size:1.6rem;margin-bottom:4px">02</div>
+          <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Aprobación</div>
+          <p style="font-size:.78rem;color:#6e7681">Confirmación de la propuesta y arranque</p>
+        </div>
+        <div style="background:#0D1117;border:1px solid rgba(0,200,200,.2);border-radius:14px;padding:18px 22px;text-align:left;min-width:200px">
+          <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#00C8C8;font-size:1.6rem;margin-bottom:4px">03</div>
+          <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Sistema activo</div>
+          <p style="font-size:.78rem;color:#6e7681">7–10 días hábiles. IA lista, QR entregados</p>
+        </div>
+      </div>
+
+      <!-- Logos + quote -->
+      <div style="background:linear-gradient(135deg,rgba(0,200,200,.06),rgba(14,165,233,.04));border:1px solid rgba(0,200,200,.2);border-radius:18px;padding:24px 36px;max-width:560px">
+        <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px">
+          <div style="background:#D70000;border-radius:7px;padding:4px 10px">
+            <span style="font-family:'Rubik',sans-serif;font-weight:900;font-size:.8rem;color:white;letter-spacing:2px">ITALIKA</span>
+          </div>
+          <div style="color:#374151">×</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center">
+              <svg width="10" height="10" fill="white" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <span style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.8rem">Delta Kilo <span style="color:#00C8C8">Soluciones</span></span>
+          </div>
+        </div>
+        <p style="font-family:'Rubik',sans-serif;font-weight:500;font-size:.95rem;color:white;line-height:1.6">
+          "No solo gestionamos reseñas.<br/>
+          <span class="grad" style="font-weight:700">Controlamos la percepción digital de la marca<br/>y convertimos clientes satisfechos en promotores."</span>
+        </p>
+        <p style="margin-top:12px;font-size:.75rem;color:#374151">deltakilo.vela@gmail.com · Tepic, Nayarit</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- ── END SLIDES ── -->
+
+<!-- NAV -->
+<div id="nav">
+  <button class="nav-btn" onclick="go(-1)" title="Anterior (←)">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+  </button>
+  <div class="dot-nav" id="dots"></div>
+  <span id="slide-counter">1 / 12</span>
+  <button class="nav-btn" onclick="go(1)" title="Siguiente (→)">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+  </button>
+</div>
+
+<script>
+const TOTAL = 13;
+let cur = 0;
+
+// Build dots
+const dotsEl = document.getElementById('dots');
+for(let i=0;i<TOTAL;i++){
+  const d = document.createElement('div');
+  d.className='dnav'+(i===0?' on':'');
+  d.onclick=()=>goTo(i);
+  dotsEl.appendChild(d);
+}
+
+function goTo(n){
+  const slides=document.querySelectorAll('.slide');
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('exit');
+  setTimeout(()=>slides[cur].classList.remove('exit'),450);
+  cur=n;
+  slides[cur].classList.add('active');
+  document.querySelectorAll('.dnav').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  document.getElementById('slide-counter').textContent=(cur+1)+' / '+TOTAL;
+  document.getElementById('progress').style.width=((cur+1)/TOTAL*100)+'%';
+}
+
+function go(dir){
+  const n=(cur+dir+TOTAL)%TOTAL;
+  goTo(n);
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') go(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') go(-1);
+});
+
+// Calculator
+function fmt(n){return'$'+n.toLocaleString('es-MX')}
+function calcUpdate(v){
+  v=parseInt(v);
+  const mens=v*500, anual=mens*12;
+  document.getElementById('suc-num').textContent=v;
+  document.getElementById('suc-num2').textContent=v;
+  document.getElementById('suc-num3').textContent=v;
+  document.getElementById('suc-ben').textContent=v;
+  document.getElementById('suc-ben2').textContent=v;
+  document.getElementById('suc-ben3').textContent=v;
+  document.getElementById('suc-comp').textContent=v;
+  document.getElementById('inst-total').textContent='GRATIS';
+  document.getElementById('mens-total').textContent=fmt(mens)+'/mes';
+  document.getElementById('anual-total').textContent=fmt(anual);
+  document.getElementById('comp-price').textContent=fmt(mens)+'/mes';
+  const save=Math.max(0,8000-mens);
+  document.getElementById('saving').textContent='~'+fmt(save)+'/mes';
+}
+
+// Init progress
+document.getElementById('progress').style.width=(1/TOTAL*100)+'%';
+</script>
+</body>
+</html>
