@@ -8,7 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Nunito Sans',sans-serif;background:#080C10;color:#E6EDF3;overflow:hidden;height:100vh}
+  /* TV/Projector: base 20px makes all rem values ~25% bigger */
+  html{font-size:20px}
+  body{font-family:'Nunito Sans',sans-serif;background:#080C10;color:#E6EDF3;overflow:hidden;height:100vh;font-size:1rem}
   h1,h2,h3,h4,.font-heading{font-family:'Rubik',sans-serif}
 
   /* ── Deck ── */
@@ -21,48 +23,57 @@
   .teal{color:#00C8C8}.teal-bg{background:#00C8C8}
   .grad{background:linear-gradient(135deg,#00C8C8,#0EA5E9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
   .grad-bg{background:linear-gradient(135deg,#00C8C8,#0EA5E9)}
-  .card{background:#0D1117;border:1px solid rgba(0,200,200,.18);border-radius:16px;transition:border-color .2s,box-shadow .2s}
-  .card:hover{border-color:rgba(0,200,200,.45);box-shadow:0 0 28px rgba(0,200,200,.12)}
-  .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,200,.1);border:1px solid rgba(0,200,200,.25);border-radius:999px;padding:4px 14px;font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#00C8C8}
-  .dot{width:8px;height:8px;border-radius:50%;background:#00C8C8;animation:pulse 2s infinite}
+  /* Cards: border más visible para pantallas brillantes */
+  .card{background:#0D1420;border:2px solid rgba(0,200,200,.40);border-radius:16px;transition:border-color .2s,box-shadow .2s}
+  .card:hover{border-color:rgba(0,200,200,.7);box-shadow:0 0 32px rgba(0,200,200,.18)}
+  .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,200,.15);border:1px solid rgba(0,200,200,.5);border-radius:999px;padding:6px 18px;font-size:.75rem;font-family:'Rubik',sans-serif;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#00E5E5}
+  .dot{width:10px;height:10px;border-radius:50%;background:#00C8C8;animation:pulse 2s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
   /* ── Nav ── */
-  #nav{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(13,17,23,.85);border:1px solid rgba(255,255,255,.07);border-radius:999px;padding:10px 24px;backdrop-filter:blur(12px);z-index:100}
-  .nav-btn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(0,200,200,.3);background:transparent;color:#00C8C8;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:1rem}
-  .nav-btn:hover{background:rgba(0,200,200,.15);border-color:#00C8C8}
-  #slide-counter{font-family:'Rubik',sans-serif;font-size:.8rem;color:#6e7681;min-width:52px;text-align:center}
-  .dot-nav{display:flex;gap:6px;align-items:center}
-  .dnav{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:all .25s}
-  .dnav.on{background:#00C8C8;width:18px;border-radius:3px}
+  #nav{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;background:rgba(8,12,16,.92);border:2px solid rgba(0,200,200,.35);border-radius:999px;padding:12px 28px;backdrop-filter:blur(16px);z-index:100}
+  .nav-btn{width:48px;height:48px;border-radius:50%;border:2px solid rgba(0,200,200,.6);background:transparent;color:#00C8C8;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:1.2rem}
+  .nav-btn:hover{background:rgba(0,200,200,.2);border-color:#00C8C8}
+  #slide-counter{font-family:'Rubik',sans-serif;font-size:.85rem;color:#C0CDD8;min-width:60px;text-align:center;font-weight:600}
+  .dot-nav{display:flex;gap:7px;align-items:center}
+  .dnav{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:all .25s}
+  .dnav.on{background:#00C8C8;width:24px;border-radius:4px}
 
   /* ── Progress ── */
-  #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#00C8C8,#0EA5E9);transition:width .4s ease;z-index:200}
+  #progress{position:fixed;top:0;left:0;height:5px;background:linear-gradient(90deg,#00C8C8,#0EA5E9);transition:width .4s ease;z-index:200;box-shadow:0 0 12px rgba(0,200,200,.6)}
 
   /* ── Slide-specific ── */
-  .max-slide{max-width:1040px;width:100%}
+  .max-slide{max-width:1100px;width:100%}
 
   /* Star rating */
-  .stars{display:flex;gap:3px}
-  .star{color:#FBBF24;font-size:1.1rem}
-  .star.off{color:#374151}
+  .stars{display:flex;gap:4px}
+  .star{color:#FBBF24;font-size:1.3rem}
+  .star.off{color:#4B5563}
 
   /* Scroll within slide */
   .slide-scroll{overflow-y:auto;max-height:calc(100vh - 140px);width:100%;scrollbar-width:thin;scrollbar-color:#00C8C8 transparent}
-  .slide-scroll::-webkit-scrollbar{width:4px}
+  .slide-scroll::-webkit-scrollbar{width:5px}
   .slide-scroll::-webkit-scrollbar-track{background:transparent}
-  .slide-scroll::-webkit-scrollbar-thumb{background:#00C8C8;border-radius:2px}
+  .slide-scroll::-webkit-scrollbar-thumb{background:#00C8C8;border-radius:3px}
 
   /* Calculator */
-  #suc-range{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:#21262D;outline:none}
-  #suc-range::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#00C8C8;cursor:pointer;border:3px solid #080C10;box-shadow:0 0 0 2px #00C8C8}
+  #suc-range{-webkit-appearance:none;width:100%;height:8px;border-radius:4px;background:#21262D;outline:none}
+  #suc-range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:#00C8C8;cursor:pointer;border:3px solid #080C10;box-shadow:0 0 0 3px #00C8C8}
 
-  .chip{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,200,.08);border:1px solid rgba(0,200,200,.2);border-radius:8px;padding:6px 12px;font-size:.75rem;color:#00C8C8;font-family:'Rubik',sans-serif;font-weight:500}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,200,.12);border:1px solid rgba(0,200,200,.35);border-radius:8px;padding:7px 14px;font-size:.78rem;color:#00E5E5;font-family:'Rubik',sans-serif;font-weight:600}
 
   /* Flow */
   .flow-step{display:flex;gap:16px;align-items:flex-start}
-  .flow-icon{flex-shrink:0;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center}
-  .flow-line{width:2px;height:32px;background:linear-gradient(180deg,rgba(0,200,200,.4),transparent);margin:0 21px}
+  .flow-icon{flex-shrink:0;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center}
+  .flow-line{width:2px;height:32px;background:linear-gradient(180deg,rgba(0,200,200,.5),transparent);margin:0 23px}
+
+  /* ── Contraste global: texto secundario legible en TV ── */
+  /* Estos overrides elevan cualquier gris oscuro inline */
+  @media screen {
+    [style*="color:#A8B8C4"]{color:#A8B8C4 !important}
+    [style*="color:#C0CDD8"]{color:#C0CDD8 !important}
+    [style*="color:#6E7681"]{color:#A8B8C4 !important}
+  }
 
   @media (prefers-reduced-motion:reduce){.slide{transition:none}}
 </style>
@@ -96,7 +107,7 @@
         <h1 style="font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;line-height:1.1;color:white">
           Sistema de<br/><span class="grad">Reputación Activa</span>
         </h1>
-        <p style="font-size:1.15rem;color:#8B949E;margin-top:20px;max-width:580px;line-height:1.7">
+        <p style="font-size:1.15rem;color:#C0CDD8;margin-top:20px;max-width:580px;line-height:1.7">
           Automatización inteligente para controlar, mejorar y escalar la presencia digital de <strong style="color:white">Motopartes y Equipos Italika</strong> en Google Maps.
         </p>
       </div>
@@ -108,17 +119,17 @@
           <div class="stars" style="justify-content:center;margin:4px 0">
             <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
           </div>
-          <div style="font-size:.7rem;color:#6e7681">objetivo Google Maps</div>
+          <div style="font-size:.7rem;color:#A8B8C4">objetivo Google Maps</div>
         </div>
         <div style="padding:20px 32px;text-align:center;border-right:1px solid rgba(0,200,200,.1)">
           <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.8rem;color:#00C8C8">24/7</div>
           <div style="font-size:.75rem;color:white;margin:6px 0">IA activa</div>
-          <div style="font-size:.7rem;color:#6e7681">sin descanso</div>
+          <div style="font-size:.7rem;color:#A8B8C4">sin descanso</div>
         </div>
         <div style="padding:20px 32px;text-align:center">
           <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.8rem;color:#00C8C8">$500</div>
           <div style="font-size:.75rem;color:white;margin:6px 0">por sucursal</div>
-          <div style="font-size:.7rem;color:#6e7681">mensual</div>
+          <div style="font-size:.7rem;color:#A8B8C4">mensual</div>
         </div>
       </div>
 
@@ -133,7 +144,7 @@
       <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:white;margin-bottom:8px">
         Lo que está en juego<br/><span class="grad">en cada reseña</span>
       </h2>
-      <p style="color:#8B949E;margin-bottom:36px;max-width:600px">El 93% de los consumidores revisa reseñas antes de visitar un negocio local. Una reseña sin respuesta manda el mensaje equivocado.</p>
+      <p style="color:#C0CDD8;margin-bottom:36px;max-width:600px">El 93% de los consumidores revisa reseñas antes de visitar un negocio local. Una reseña sin respuesta manda el mensaje equivocado.</p>
 
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
         <div class="card" style="padding:24px;border-color:rgba(239,68,68,.2)">
@@ -141,21 +152,21 @@
             <svg width="22" height="22" fill="none" stroke="#EF4444" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
           </div>
           <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.05rem;color:white;margin-bottom:8px">Reseñas sin respuesta</div>
-          <p style="font-size:.82rem;color:#6e7681;line-height:1.6">Un cliente molesto que no recibe respuesta escala su queja. El silencio es percibido como indiferencia.</p>
+          <p style="font-size:.82rem;color:#A8B8C4;line-height:1.6">Un cliente molesto que no recibe respuesta escala su queja. El silencio es percibido como indiferencia.</p>
         </div>
         <div class="card" style="padding:24px;border-color:rgba(239,68,68,.2)">
           <div style="width:44px;height:44px;border-radius:12px;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
             <svg width="22" height="22" fill="none" stroke="#EF4444" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
           </div>
           <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.05rem;color:white;margin-bottom:8px">Inconsistencia entre sucursales</div>
-          <p style="font-size:.82rem;color:#6e7681;line-height:1.6">Cada sucursal responde diferente — o no responde. El cliente percibe falta de profesionalismo y estándar.</p>
+          <p style="font-size:.82rem;color:#A8B8C4;line-height:1.6">Cada sucursal responde diferente — o no responde. El cliente percibe falta de profesionalismo y estándar.</p>
         </div>
         <div class="card" style="padding:24px;border-color:rgba(239,68,68,.2)">
           <div style="width:44px;height:44px;border-radius:12px;background:rgba(239,68,68,.1);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
             <svg width="22" height="22" fill="none" stroke="#EF4444" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
           </div>
           <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.05rem;color:white;margin-bottom:8px">Sin datos ni visibilidad</div>
-          <p style="font-size:.82rem;color:#6e7681;line-height:1.6">No se sabe cuántas reseñas entran, cuál sucursal tiene más problemas, ni qué tipo de quejas son más frecuentes.</p>
+          <p style="font-size:.82rem;color:#A8B8C4;line-height:1.6">No se sabe cuántas reseñas entran, cuál sucursal tiene más problemas, ni qué tipo de quejas son más frecuentes.</p>
         </div>
       </div>
 
@@ -173,7 +184,7 @@
       <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:white;margin-bottom:6px">
         <span class="grad">Reputación Activa</span><br/>no solo gestión de reseñas
       </h2>
-      <p style="color:#8B949E;margin-bottom:32px">Un sistema completo que opera desde <strong style="color:white">La Garra CRM + Automatizaciones + IA Jaguar</strong></p>
+      <p style="color:#C0CDD8;margin-bottom:32px">Un sistema completo que opera desde <strong style="color:white">La Garra CRM + Automatizaciones + IA Jaguar</strong></p>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <!-- Left: modules -->
@@ -184,7 +195,7 @@
             </div>
             <div>
               <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.95rem">Monitoreo Inteligente</div>
-              <div style="font-size:.75rem;color:#6e7681">Alertas en tiempo real · Clasificación por tipo</div>
+              <div style="font-size:.75rem;color:#A8B8C4">Alertas en tiempo real · Clasificación por tipo</div>
             </div>
           </div>
           <div class="card" style="padding:16px 20px;display:flex;gap:14px;align-items:center">
@@ -193,7 +204,7 @@
             </div>
             <div>
               <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.95rem">Respuestas con IA</div>
-              <div style="font-size:.75rem;color:#6e7681">Agente entrenado · Tono Italika · 24/7</div>
+              <div style="font-size:.75rem;color:#A8B8C4">Agente entrenado · Tono Italika · 24/7</div>
             </div>
           </div>
           <div class="card" style="padding:16px 20px;display:flex;gap:14px;align-items:center">
@@ -202,7 +213,7 @@
             </div>
             <div>
               <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.95rem">QR + Captación Activa</div>
-              <div style="font-size:.75rem;color:#6e7681">Filtro satisfechos/insatisfechos · SEO local</div>
+              <div style="font-size:.75rem;color:#A8B8C4">Filtro satisfechos/insatisfechos · SEO local</div>
             </div>
           </div>
           <div class="card" style="padding:16px 20px;display:flex;gap:14px;align-items:center">
@@ -211,7 +222,7 @@
             </div>
             <div>
               <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.95rem">Reporte Mensual</div>
-              <div style="font-size:.75rem;color:#6e7681">Sentimiento · Métricas · Recomendaciones</div>
+              <div style="font-size:.75rem;color:#A8B8C4">Sentimiento · Métricas · Recomendaciones</div>
             </div>
           </div>
         </div>
@@ -223,7 +234,7 @@
             <p style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.4rem;color:white;line-height:1.4;margin-bottom:16px">
               "No solo gestionamos reseñas. <span class="grad">Controlamos la percepción digital</span> de la marca."
             </p>
-            <p style="font-size:.83rem;color:#8B949E;line-height:1.6">Convertimos clientes satisfechos en promotores activos y neutralizamos crisis antes de que impacten la reputación global.</p>
+            <p style="font-size:.83rem;color:#C0CDD8;line-height:1.6">Convertimos clientes satisfechos en promotores activos y neutralizamos crisis antes de que impacten la reputación global.</p>
             <div style="margin-top:20px;display:flex;flex-direction:column;gap:8px">
               <div style="display:flex;align-items:center;gap:8px">
                 <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
@@ -255,7 +266,7 @@
         <div class="badge">Módulo 1 de 5</div>
       </div>
       <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Monitoreo <span class="grad">Inteligente</span> de Reseñas</h2>
-      <p style="color:#8B949E;margin-bottom:32px">Visibilidad total de lo que dicen tus clientes, en tiempo real.</p>
+      <p style="color:#C0CDD8;margin-bottom:32px">Visibilidad total de lo que dicen tus clientes, en tiempo real.</p>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
         <div style="display:flex;flex-direction:column;gap:14px">
@@ -266,7 +277,7 @@
               </div>
               <div>
                 <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:4px">Seguimiento en tiempo real</div>
-                <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Cada reseña nueva en Google Maps se captura al instante, sin esperar revisiones manuales.</p>
+                <p style="font-size:.8rem;color:#A8B8C4;line-height:1.5">Cada reseña nueva en Google Maps se captura al instante, sin esperar revisiones manuales.</p>
               </div>
             </div>
           </div>
@@ -277,7 +288,7 @@
               </div>
               <div>
                 <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:4px">Alertas de reseñas negativas</div>
-                <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Notificación inmediata al correo cuando entra una reseña de 1–3 estrellas. Reacción antes de crisis.</p>
+                <p style="font-size:.8rem;color:#A8B8C4;line-height:1.5">Notificación inmediata al correo cuando entra una reseña de 1–3 estrellas. Reacción antes de crisis.</p>
               </div>
             </div>
           </div>
@@ -288,7 +299,7 @@
               </div>
               <div>
                 <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:4px">Clasificación inteligente</div>
-                <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Categorización automática por tipo: servicio, producto, tiempo de espera, precio, atención.</p>
+                <p style="font-size:.8rem;color:#A8B8C4;line-height:1.5">Categorización automática por tipo: servicio, producto, tiempo de espera, precio, atención.</p>
               </div>
             </div>
           </div>
@@ -296,7 +307,7 @@
 
         <!-- Mock alert -->
         <div class="card" style="padding:24px">
-          <div style="font-size:.7rem;color:#6e7681;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Vista previa — Alerta de reseña negativa</div>
+          <div style="font-size:.7rem;color:#A8B8C4;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Vista previa — Alerta de reseña negativa</div>
           <div style="background:#161B22;border-radius:10px;padding:16px;border:1px solid rgba(239,68,68,.15)">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
               <div>
@@ -307,7 +318,7 @@
               </div>
               <div style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:6px;padding:3px 8px;font-size:.65rem;font-family:'Rubik',sans-serif;color:#EF4444;font-weight:600">ALERTA</div>
             </div>
-            <p style="font-size:.8rem;color:#8B949E;line-height:1.5;margin-bottom:12px">"Fui a buscar una refacción y me dijeron que no había. No tienen buena atención al cliente, tardaron mucho..."</p>
+            <p style="font-size:.8rem;color:#C0CDD8;line-height:1.5;margin-bottom:12px">"Fui a buscar una refacción y me dijeron que no había. No tienen buena atención al cliente, tardaron mucho..."</p>
             <div style="display:flex;gap:8px">
               <span class="chip">⚡ Tipo: atención</span>
               <span class="chip">📍 Tepic Centro</span>
@@ -327,21 +338,21 @@
     <div class="max-slide">
       <div class="badge mb-6">Módulo 2 de 5</div>
       <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Respuestas Automáticas <span class="grad">con IA</span></h2>
-      <p style="color:#8B949E;margin-bottom:32px">El agente "Asistente de Motopartes" responde con el tono y calidad de tu mejor ejecutivo — a cualquier hora.</p>
+      <p style="color:#C0CDD8;margin-bottom:32px">El agente "Asistente de Motopartes" responde con el tono y calidad de tu mejor ejecutivo — a cualquier hora.</p>
 
       <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:20px">
         <div style="display:flex;flex-direction:column;gap:14px">
           <div class="card" style="padding:18px 20px">
             <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Agente configurado para Italika</div>
-            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Entrenado con el tono, valores y productos específicos de Motopartes. No respuestas genéricas.</p>
+            <p style="font-size:.8rem;color:#A8B8C4;line-height:1.5">Entrenado con el tono, valores y productos específicos de Motopartes. No respuestas genéricas.</p>
           </div>
           <div class="card" style="padding:18px 20px">
             <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Respuesta en minutos, no días</div>
-            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Google premia los negocios que responden rápido. Mejor tiempo de respuesta = mejor posicionamiento.</p>
+            <p style="font-size:.8rem;color:#A8B8C4;line-height:1.5">Google premia los negocios que responden rápido. Mejor tiempo de respuesta = mejor posicionamiento.</p>
           </div>
           <div class="card" style="padding:18px 20px">
             <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Priorización de negativas</div>
-            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Las reseñas de 1–3 estrellas se atienden primero y con mayor cuidado para revertir la percepción.</p>
+            <p style="font-size:.8rem;color:#A8B8C4;line-height:1.5">Las reseñas de 1–3 estrellas se atienden primero y con mayor cuidado para revertir la percepción.</p>
           </div>
           <div style="background:rgba(0,200,200,.05);border:1px solid rgba(0,200,200,.15);border-radius:12px;padding:14px 16px">
             <div style="font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#00C8C8;margin-bottom:6px">Incluido en instalación</div>
@@ -351,7 +362,7 @@
 
         <!-- Conversation mock -->
         <div class="card" style="padding:20px">
-          <div style="font-size:.7rem;color:#6e7681;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Ejemplo de respuesta con IA</div>
+          <div style="font-size:.7rem;color:#A8B8C4;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Ejemplo de respuesta con IA</div>
           <div style="display:flex;flex-direction:column;gap:10px">
             <!-- Positive review -->
             <div style="background:#161B22;border-radius:10px;padding:14px">
@@ -359,7 +370,7 @@
                 <div style="font-weight:600;color:white;font-size:.85rem">Carlos M.</div>
                 <div class="stars" style="font-size:.85rem"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
               </div>
-              <p style="font-size:.78rem;color:#8B949E">"Muy buen servicio, encontré la refacción que buscaba y a buen precio."</p>
+              <p style="font-size:.78rem;color:#C0CDD8">"Muy buen servicio, encontré la refacción que buscaba y a buen precio."</p>
             </div>
             <!-- IA response -->
             <div style="background:rgba(0,200,200,.06);border:1px solid rgba(0,200,200,.2);border-radius:10px;padding:14px">
@@ -377,7 +388,7 @@
                 <div style="font-weight:600;color:white;font-size:.85rem">Ana G.</div>
                 <div class="stars" style="font-size:.85rem"><span class="star">★</span><span class="star">★</span><span class="star off">★</span><span class="star off">★</span><span class="star off">★</span></div>
               </div>
-              <p style="font-size:.78rem;color:#8B949E">"Tardaron mucho en atenderme y no tenían lo que buscaba."</p>
+              <p style="font-size:.78rem;color:#C0CDD8">"Tardaron mucho en atenderme y no tenían lo que buscaba."</p>
             </div>
             <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:14px">
               <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
@@ -399,7 +410,7 @@
     <div class="max-slide">
       <div class="badge mb-6">Módulo 3 de 5</div>
       <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Captación Activa <span class="grad">QR + Filtro</span></h2>
-      <p style="color:#8B949E;margin-bottom:32px">Genera más reseñas positivas y canaliza las negativas antes de que sean públicas.</p>
+      <p style="color:#C0CDD8;margin-bottom:32px">Genera más reseñas positivas y canaliza las negativas antes de que sean públicas.</p>
 
       <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start">
         <!-- Flow -->
@@ -413,7 +424,7 @@
               </div>
               <div>
                 <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;font-size:.9rem">Cliente escanea QR en sucursal</div>
-                <p style="font-size:.78rem;color:#6e7681;margin-top:2px">QR físico en mostrador o ticket de compra</p>
+                <p style="font-size:.78rem;color:#A8B8C4;margin-top:2px">QR físico en mostrador o ticket de compra</p>
               </div>
             </div>
             <div class="flow-line"></div>
@@ -424,7 +435,7 @@
               </div>
               <div>
                 <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;font-size:.9rem">¿Cómo fue tu experiencia?</div>
-                <p style="font-size:.78rem;color:#6e7681;margin-top:2px">Encuesta de satisfacción rápida (1 pregunta)</p>
+                <p style="font-size:.78rem;color:#A8B8C4;margin-top:2px">Encuesta de satisfacción rápida (1 pregunta)</p>
               </div>
             </div>
             <div class="flow-line"></div>
@@ -432,12 +443,12 @@
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
               <div style="background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:14px">
                 <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#22C55E;font-size:.85rem;margin-bottom:4px">✓ Satisfecho</div>
-                <p style="font-size:.75rem;color:#6e7681">Redirigido a dejar reseña en Google Maps</p>
+                <p style="font-size:.75rem;color:#A8B8C4">Redirigido a dejar reseña en Google Maps</p>
                 <div style="margin-top:8px;font-size:.7rem;color:#22C55E;font-weight:600">→ Reseña pública ⭐⭐⭐⭐⭐</div>
               </div>
               <div style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:14px">
                 <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#EF4444;font-size:.85rem;margin-bottom:4px">✗ Insatisfecho</div>
-                <p style="font-size:.75rem;color:#6e7681">Canalizado a atención interna del negocio</p>
+                <p style="font-size:.75rem;color:#A8B8C4">Canalizado a atención interna del negocio</p>
                 <div style="margin-top:8px;font-size:.7rem;color:#EF4444;font-weight:600">→ Queja interna 🔒</div>
               </div>
             </div>
@@ -449,17 +460,17 @@
           <div class="card" style="padding:20px">
             <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:2rem;color:#00C8C8">QR</div>
             <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin:4px 0 8px">creado por sucursal</div>
-            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Código personalizado con logo de Motopartes Italika. Incluido en la instalación.</p>
+            <p style="font-size:.8rem;color:#A8B8C4;line-height:1.5">Código personalizado con logo de Motopartes Italika. Incluido en la instalación.</p>
           </div>
           <div class="card" style="padding:20px;border-color:rgba(34,197,94,.2)">
             <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:2rem;color:#22C55E">+⭐</div>
             <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin:4px 0 8px">Más reseñas positivas</div>
-            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Al activar el sistema, clientes satisfechos que antes no dejaban reseña ahora son dirigidos activamente.</p>
+            <p style="font-size:.8rem;color:#A8B8C4;line-height:1.5">Al activar el sistema, clientes satisfechos que antes no dejaban reseña ahora son dirigidos activamente.</p>
           </div>
           <div class="card" style="padding:20px;border-color:rgba(14,165,233,.2)">
             <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:2rem;color:#0EA5E9">SEO</div>
             <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin:4px 0 8px">Posicionamiento local</div>
-            <p style="font-size:.8rem;color:#6e7681;line-height:1.5">Más reseñas recientes = mejor ranking en búsquedas locales de Google.</p>
+            <p style="font-size:.8rem;color:#A8B8C4;line-height:1.5">Más reseñas recientes = mejor ranking en búsquedas locales de Google.</p>
           </div>
         </div>
       </div>
@@ -471,7 +482,7 @@
     <div class="max-slide">
       <div class="badge mb-6">Herramientas físicas</div>
       <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Los dos QR que <span class="grad">activan el sistema</span></h2>
-      <p style="color:#8B949E;margin-bottom:28px">Cada QR tiene un rol distinto. Ambos conectados a notificaciones por correo para el equipo que definas.</p>
+      <p style="color:#C0CDD8;margin-bottom:28px">Cada QR tiene un rol distinto. Ambos conectados a notificaciones por correo para el equipo que definas.</p>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
 
@@ -491,7 +502,7 @@
 
           <div>
             <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:1rem;margin-bottom:6px">QR de Reseña Google</div>
-            <p style="font-size:.8rem;color:#8B949E;line-height:1.6">El cliente lo escanea y es dirigido directamente a dejar su reseña en Google Maps de <strong style="color:white">esa sucursal específica</strong>.</p>
+            <p style="font-size:.8rem;color:#C0CDD8;line-height:1.6">El cliente lo escanea y es dirigido directamente a dejar su reseña en Google Maps de <strong style="color:white">esa sucursal específica</strong>.</p>
           </div>
 
           <div style="width:100%;display:flex;flex-direction:column;gap:7px">
@@ -519,7 +530,7 @@
             <div style="background:#D70000;border-radius:7px;padding:4px 12px">
               <span style="font-family:'Rubik',sans-serif;font-weight:900;font-size:.85rem;color:white;letter-spacing:2px">ITALIKA</span>
             </div>
-            <span style="font-size:.7rem;color:#6e7681;font-family:'Rubik',sans-serif">Motopartes y Equipos</span>
+            <span style="font-size:.7rem;color:#A8B8C4;font-family:'Rubik',sans-serif">Motopartes y Equipos</span>
           </div>
 
           <!-- QR image -->
@@ -529,7 +540,7 @@
 
           <div>
             <div style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:1rem;margin-bottom:6px">QR Chat de Satisfacción</div>
-            <p style="font-size:.8rem;color:#8B949E;line-height:1.6">Abre un <strong style="color:white">chat widget</strong> de satisfacción del cliente. Disponible para todas las sucursales con un solo QR universal.</p>
+            <p style="font-size:.8rem;color:#C0CDD8;line-height:1.6">Abre un <strong style="color:white">chat widget</strong> de satisfacción del cliente. Disponible para todas las sucursales con un solo QR universal.</p>
           </div>
 
           <div style="width:100%;display:flex;flex-direction:column;gap:7px">
@@ -552,7 +563,7 @@
       <!-- Email notification note -->
       <div style="margin-top:18px;background:rgba(0,200,200,.04);border:1px solid rgba(0,200,200,.15);border-radius:12px;padding:13px 18px;display:flex;gap:10px;align-items:center">
         <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-        <p style="font-size:.8rem;color:#8B949E"><strong style="color:white">Notificaciones por correo:</strong> Ambos QR pueden estar conectados a cualquier miembro del equipo que necesites — gerente, encargado de sucursal, área de marketing, etc.</p>
+        <p style="font-size:.8rem;color:#C0CDD8"><strong style="color:white">Notificaciones por correo:</strong> Ambos QR pueden estar conectados a cualquier miembro del equipo que necesites — gerente, encargado de sucursal, área de marketing, etc.</p>
       </div>
     </div>
   </div>
@@ -562,7 +573,7 @@
     <div class="max-slide">
       <div class="badge mb-6">Módulo 4 de 4</div>
       <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Reporte Mensual <span class="grad">de Reputación</span></h2>
-      <p style="color:#8B949E;margin-bottom:28px">Enviado automáticamente cada mes al equipo. Sin que nadie tenga que generarlo manualmente.</p>
+      <p style="color:#C0CDD8;margin-bottom:28px">Enviado automáticamente cada mes al equipo. Sin que nadie tenga que generarlo manualmente.</p>
 
       <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:start">
         <div style="display:flex;flex-direction:column;gap:14px">
@@ -603,36 +614,36 @@
           </div>
           <div style="background:rgba(0,200,200,.05);border:1px solid rgba(0,200,200,.15);border-radius:12px;padding:13px 16px;display:flex;gap:10px;align-items:center">
             <svg width="16" height="16" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            <p style="font-size:.8rem;color:#8B949E">Enviado automáticamente por correo a quien definas del equipo.</p>
+            <p style="font-size:.8rem;color:#C0CDD8">Enviado automáticamente por correo a quien definas del equipo.</p>
           </div>
         </div>
 
         <!-- Mock reporte -->
         <div class="card" style="padding:20px">
-          <div style="font-size:.7rem;color:#6e7681;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Vista previa — Resumen del mes</div>
+          <div style="font-size:.7rem;color:#A8B8C4;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Vista previa — Resumen del mes</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
             <div style="background:#161B22;border-radius:10px;padding:14px;text-align:center">
               <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.7rem;color:#00C8C8">4.8</div>
               <div class="stars" style="justify-content:center;margin:4px 0"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star" style="font-size:.9rem;opacity:.6">★</span></div>
-              <div style="font-size:.7rem;color:#6e7681">Calificación prom.</div>
+              <div style="font-size:.7rem;color:#A8B8C4">Calificación prom.</div>
             </div>
             <div style="background:#161B22;border-radius:10px;padding:14px;text-align:center">
               <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.7rem;color:#22C55E">+24</div>
               <div style="font-size:.75rem;color:white;margin:4px 0">reseñas</div>
-              <div style="font-size:.7rem;color:#6e7681">este mes</div>
+              <div style="font-size:.7rem;color:#A8B8C4">este mes</div>
             </div>
             <div style="background:#161B22;border-radius:10px;padding:14px;text-align:center">
               <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.7rem;color:#00C8C8">87%</div>
-              <div style="font-size:.7rem;color:#6e7681;margin-top:4px">Positivas</div>
+              <div style="font-size:.7rem;color:#A8B8C4;margin-top:4px">Positivas</div>
             </div>
             <div style="background:#161B22;border-radius:10px;padding:14px;text-align:center">
               <div style="font-family:'Rubik',sans-serif;font-weight:800;font-size:1.7rem;color:#EF4444">3</div>
-              <div style="font-size:.7rem;color:#6e7681;margin-top:4px">Quejas detectadas</div>
+              <div style="font-size:.7rem;color:#A8B8C4;margin-top:4px">Quejas detectadas</div>
             </div>
           </div>
           <div style="background:rgba(0,200,200,.06);border:1px solid rgba(0,200,200,.2);border-radius:10px;padding:12px">
             <div style="font-size:.72rem;font-family:'Rubik',sans-serif;font-weight:600;color:#00C8C8;margin-bottom:5px">Recomendación del mes</div>
-            <p style="font-size:.77rem;color:#8B949E;line-height:1.5">2 sucursales con calificación menor a 4.5 requieren atención prioritaria en tiempos de espera.</p>
+            <p style="font-size:.77rem;color:#C0CDD8;line-height:1.5">2 sucursales con calificación menor a 4.5 requieren atención prioritaria en tiempos de espera.</p>
           </div>
         </div>
       </div>
@@ -647,7 +658,7 @@
         <div style="background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:999px;padding:4px 12px;font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;color:#FBBF24">Add-on disponible</div>
       </div>
       <h2 style="font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:800;color:white;margin-bottom:6px">Chat de Satisfacción <span class="grad">activado por QR</span></h2>
-      <p style="color:#8B949E;margin-bottom:28px">Un canal exclusivo para conocer la experiencia real del cliente — sin ventas, sin presión. Solo escuchar y mejorar.</p>
+      <p style="color:#C0CDD8;margin-bottom:28px">Un canal exclusivo para conocer la experiencia real del cliente — sin ventas, sin presión. Solo escuchar y mejorar.</p>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
         <div style="display:flex;flex-direction:column;gap:14px">
@@ -660,7 +671,7 @@
                 </div>
                 <div>
                   <div style="font-size:.85rem;font-weight:600;color:white">Acceso por escaneo de QR</div>
-                  <p style="font-size:.77rem;color:#6e7681;line-height:1.5">El cliente escanea el QR de Motopartes Italika desde cualquier sucursal y se abre el chat widget directamente en su teléfono.</p>
+                  <p style="font-size:.77rem;color:#A8B8C4;line-height:1.5">El cliente escanea el QR de Motopartes Italika desde cualquier sucursal y se abre el chat widget directamente en su teléfono.</p>
                 </div>
               </div>
               <div style="display:flex;align-items:flex-start;gap:10px">
@@ -669,7 +680,7 @@
                 </div>
                 <div>
                   <div style="font-size:.85rem;font-weight:600;color:white">Solo satisfacción — nada más</div>
-                  <p style="font-size:.77rem;color:#6e7681;line-height:1.5">El chat pregunta exclusivamente sobre la experiencia del cliente: atención, tiempo de espera y calidad del servicio. Sin ventas ni redirecciones.</p>
+                  <p style="font-size:.77rem;color:#A8B8C4;line-height:1.5">El chat pregunta exclusivamente sobre la experiencia del cliente: atención, tiempo de espera y calidad del servicio. Sin ventas ni redirecciones.</p>
                 </div>
               </div>
               <div style="display:flex;align-items:flex-start;gap:10px">
@@ -678,7 +689,7 @@
                 </div>
                 <div>
                   <div style="font-size:.85rem;font-weight:600;color:white">Notificación por correo al equipo</div>
-                  <p style="font-size:.77rem;color:#6e7681;line-height:1.5">Cada respuesta genera una alerta automática al equipo que designes. Respuesta rápida ante clientes insatisfechos.</p>
+                  <p style="font-size:.77rem;color:#A8B8C4;line-height:1.5">Cada respuesta genera una alerta automática al equipo que designes. Respuesta rápida ante clientes insatisfechos.</p>
                 </div>
               </div>
               <div style="display:flex;align-items:flex-start;gap:10px">
@@ -687,7 +698,7 @@
                 </div>
                 <div>
                   <div style="font-size:.85rem;font-weight:600;color:white">Un QR para toda la red</div>
-                  <p style="font-size:.77rem;color:#6e7681;line-height:1.5">El mismo QR funciona en todas las sucursales. Los resultados se consolidan en el reporte mensual por ubicación.</p>
+                  <p style="font-size:.77rem;color:#A8B8C4;line-height:1.5">El mismo QR funciona en todas las sucursales. Los resultados se consolidan en el reporte mensual por ubicación.</p>
                 </div>
               </div>
             </div>
@@ -695,13 +706,13 @@
 
           <div style="background:rgba(251,191,36,.05);border:1px solid rgba(251,191,36,.2);border-radius:12px;padding:14px 16px">
             <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#FBBF24;margin-bottom:4px">Precio del módulo opcional</div>
-            <p style="font-size:.8rem;color:#8B949E">A cotizar según número de sucursales. Podemos presentar opciones en la siguiente reunión.</p>
+            <p style="font-size:.8rem;color:#C0CDD8">A cotizar según número de sucursales. Podemos presentar opciones en la siguiente reunión.</p>
           </div>
         </div>
 
         <!-- Visual: chat widget mockup -->
         <div class="card" style="padding:20px">
-          <div style="font-size:.7rem;color:#6e7681;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Vista previa — Widget de satisfacción</div>
+          <div style="font-size:.7rem;color:#A8B8C4;font-family:'Rubik',sans-serif;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px">Vista previa — Widget de satisfacción</div>
           <div style="background:#161B22;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px">
             <!-- Header del widget -->
             <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px">
@@ -710,7 +721,7 @@
               </div>
               <div>
                 <div style="font-size:.78rem;font-weight:700;color:white">Motopartes Italika</div>
-                <div style="font-size:.68rem;color:#6e7681">Encuesta de satisfacción · 2 min</div>
+                <div style="font-size:.68rem;color:#A8B8C4">Encuesta de satisfacción · 2 min</div>
               </div>
             </div>
             <!-- Mensaje bot -->
@@ -741,7 +752,7 @@
           <!-- Nota correo -->
           <div style="margin-top:12px;background:rgba(0,200,200,.05);border:1px solid rgba(0,200,200,.15);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px">
             <svg width="14" height="14" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-            <span style="font-size:.74rem;color:#8B949E">Cada respuesta genera notificación al equipo designado vía correo</span>
+            <span style="font-size:.74rem;color:#C0CDD8">Cada respuesta genera notificación al equipo designado vía correo</span>
           </div>
             </div>
           </div>
@@ -755,13 +766,13 @@
     <div class="max-slide">
       <div class="badge mb-6">Modelo de Inversión</div>
       <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:white;margin-bottom:6px">Claro, escalable <span class="grad">y sin sorpresas</span></h2>
-      <p style="color:#8B949E;margin-bottom:28px">Precio por sucursal. Pagas exactamente por lo que activas.</p>
+      <p style="color:#C0CDD8;margin-bottom:28px">Precio por sucursal. Pagas exactamente por lo que activas.</p>
 
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px">
         <!-- Instalación -->
         <div class="card" style="padding:24px;border-color:rgba(34,197,94,.3);position:relative;overflow:hidden">
           <div style="position:absolute;top:10px;right:10px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.35);border-radius:999px;padding:3px 10px;font-size:.65rem;font-family:'Rubik',sans-serif;font-weight:700;color:#22C55E;text-transform:uppercase;letter-spacing:.08em">Sin costo</div>
-          <div style="font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#6e7681;margin-bottom:12px">Por sucursal</div>
+          <div style="font-size:.7rem;font-family:'Rubik',sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#A8B8C4;margin-bottom:12px">Por sucursal</div>
           <div style="font-family:'Rubik',sans-serif;font-weight:900;font-size:2.6rem;color:#22C55E">GRATIS</div>
           <div style="color:#22C55E;font-family:'Rubik',sans-serif;font-weight:600;margin:6px 0 14px">Implementación incluida</div>
           <div style="display:flex;flex-direction:column;gap:7px">
@@ -835,7 +846,7 @@
       <!-- ROI note -->
       <div style="background:rgba(0,200,200,.04);border:1px solid rgba(0,200,200,.15);border-radius:12px;padding:14px 18px;display:flex;gap:12px;align-items:center">
         <svg width="18" height="18" fill="none" stroke="#00C8C8" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <p style="font-size:.8rem;color:#8B949E"><strong style="color:white">¿Vale la inversión?</strong> Un punto más en calificación Google puede aumentar visitas entre 5–9% por sucursal. En una red de 5 sucursales eso representa decenas de clientes nuevos por mes — bien por encima del costo del sistema.</p>
+        <p style="font-size:.8rem;color:#C0CDD8"><strong style="color:white">¿Vale la inversión?</strong> Un punto más en calificación Google puede aumentar visitas entre 5–9% por sucursal. En una red de 5 sucursales eso representa decenas de clientes nuevos por mes — bien por encima del costo del sistema.</p>
       </div>
     </div>
   </div>
@@ -845,7 +856,7 @@
     <div class="max-slide">
       <div class="badge mb-6">Calculadora interactiva</div>
       <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:white;margin-bottom:6px">¿Cuántas sucursales <span class="grad">quieres activar?</span></h2>
-      <p style="color:#8B949E;margin-bottom:32px">Mueve el slider y ve la inversión en tiempo real.</p>
+      <p style="color:#C0CDD8;margin-bottom:32px">Mueve el slider y ve la inversión en tiempo real.</p>
 
       <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:start">
         <!-- Calculator -->
@@ -879,7 +890,7 @@
             </div>
             <div style="background:#161B22;border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center">
               <div>
-                <div style="font-size:.75rem;color:#6e7681">Inversión año 1 (12 meses · implementación sin costo)</div>
+                <div style="font-size:.75rem;color:#A8B8C4">Inversión año 1 (12 meses · implementación sin costo)</div>
               </div>
               <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.3rem;color:white" id="anual-total">$18,000</div>
             </div>
@@ -911,14 +922,14 @@
           </div>
 
           <div class="card" style="padding:18px">
-            <div style="font-size:.72rem;color:#6e7681;margin-bottom:8px">Comparativa con gestión manual</div>
+            <div style="font-size:.72rem;color:#A8B8C4;margin-bottom:8px">Comparativa con gestión manual</div>
             <div style="display:flex;flex-direction:column;gap:6px">
               <div style="display:flex;justify-content:space-between;align-items:center">
-                <span style="font-size:.8rem;color:#8B949E">Empleado dedicado a reseñas</span>
+                <span style="font-size:.8rem;color:#C0CDD8">Empleado dedicado a reseñas</span>
                 <span style="font-family:'Rubik',sans-serif;font-weight:700;color:#EF4444;font-size:.9rem">~$8,000+/mes</span>
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center">
-                <span style="font-size:.8rem;color:#8B949E">Sistema Delta Kilo (<span id="suc-comp">3</span> suc.)</span>
+                <span style="font-size:.8rem;color:#C0CDD8">Sistema Delta Kilo (<span id="suc-comp">3</span> suc.)</span>
                 <span style="font-family:'Rubik',sans-serif;font-weight:700;color:#00C8C8;font-size:.9rem" id="comp-price">$1,500/mes</span>
               </div>
             </div>
@@ -938,7 +949,7 @@
     <div class="max-slide">
       <div class="badge mb-6">Resultados esperados</div>
       <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:white;margin-bottom:6px">Lo que cambia cuando<br/><span class="grad">el sistema trabaja por ti</span></h2>
-      <p style="color:#8B949E;margin-bottom:32px">Beneficios acumulables conforme más sucursales se integran al sistema.</p>
+      <p style="color:#C0CDD8;margin-bottom:32px">Beneficios acumulables conforme más sucursales se integran al sistema.</p>
 
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
         <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
@@ -947,7 +958,7 @@
           </div>
           <div>
             <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.4rem;color:#00C8C8">Mayor calificación</div>
-            <p style="font-size:.82rem;color:#8B949E;margin-top:4px;line-height:1.5">Más reseñas positivas generadas + reseñas negativas canalizadas internamente = calificación promedio al alza en todas las fichas.</p>
+            <p style="font-size:.82rem;color:#C0CDD8;margin-top:4px;line-height:1.5">Más reseñas positivas generadas + reseñas negativas canalizadas internamente = calificación promedio al alza en todas las fichas.</p>
           </div>
         </div>
         <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
@@ -956,7 +967,7 @@
           </div>
           <div>
             <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.4rem;color:#00C8C8">Más clientes nuevos</div>
-            <p style="font-size:.82rem;color:#8B949E;margin-top:4px;line-height:1.5">Una calificación más alta en Google Maps significa mejor posición en búsquedas locales → más personas encontrando y visitando tus sucursales.</p>
+            <p style="font-size:.82rem;color:#C0CDD8;margin-top:4px;line-height:1.5">Una calificación más alta en Google Maps significa mejor posición en búsquedas locales → más personas encontrando y visitando tus sucursales.</p>
           </div>
         </div>
         <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
@@ -965,7 +976,7 @@
           </div>
           <div>
             <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.4rem;color:#00C8C8">Marca protegida</div>
-            <p style="font-size:.82rem;color:#8B949E;margin-top:4px;line-height:1.5">Cada reseña negativa tiene respuesta rápida y profesional. La percepción pública de Italika se controla, no se deja al azar.</p>
+            <p style="font-size:.82rem;color:#C0CDD8;margin-top:4px;line-height:1.5">Cada reseña negativa tiene respuesta rápida y profesional. La percepción pública de Italika se controla, no se deja al azar.</p>
           </div>
         </div>
         <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
@@ -974,7 +985,7 @@
           </div>
           <div>
             <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.4rem;color:#00C8C8">Datos para decidir</div>
-            <p style="font-size:.82rem;color:#8B949E;margin-top:4px;line-height:1.5">Identificas qué sucursales necesitan intervención, qué problemas son recurrentes y dónde focalizar mejoras operativas.</p>
+            <p style="font-size:.82rem;color:#C0CDD8;margin-top:4px;line-height:1.5">Identificas qué sucursales necesitan intervención, qué problemas son recurrentes y dónde focalizar mejoras operativas.</p>
           </div>
         </div>
       </div>
@@ -990,7 +1001,7 @@
         ¿Cuántas sucursales<br/><span class="grad">empezamos a activar?</span>
       </h2>
 
-      <p style="color:#8B949E;font-size:1rem;max-width:560px;line-height:1.7;margin-bottom:36px">
+      <p style="color:#C0CDD8;font-size:1rem;max-width:560px;line-height:1.7;margin-bottom:36px">
         El sistema ya está operando con resultados en la sucursal piloto. Escalar al resto de la red es el siguiente paso natural.
       </p>
 
@@ -999,17 +1010,17 @@
         <div style="background:#0D1117;border:1px solid rgba(0,200,200,.2);border-radius:14px;padding:18px 22px;text-align:left;min-width:200px">
           <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#00C8C8;font-size:1.6rem;margin-bottom:4px">01</div>
           <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Definir sucursales</div>
-          <p style="font-size:.78rem;color:#6e7681">¿Cuántas y cuáles quieren activar primero?</p>
+          <p style="font-size:.78rem;color:#A8B8C4">¿Cuántas y cuáles quieren activar primero?</p>
         </div>
         <div style="background:#0D1117;border:1px solid rgba(0,200,200,.2);border-radius:14px;padding:18px 22px;text-align:left;min-width:200px">
           <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#00C8C8;font-size:1.6rem;margin-bottom:4px">02</div>
           <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Aprobación</div>
-          <p style="font-size:.78rem;color:#6e7681">Confirmación de la propuesta y arranque</p>
+          <p style="font-size:.78rem;color:#A8B8C4">Confirmación de la propuesta y arranque</p>
         </div>
         <div style="background:#0D1117;border:1px solid rgba(0,200,200,.2);border-radius:14px;padding:18px 22px;text-align:left;min-width:200px">
           <div style="font-family:'Rubik',sans-serif;font-weight:700;color:#00C8C8;font-size:1.6rem;margin-bottom:4px">03</div>
           <div style="font-family:'Rubik',sans-serif;font-weight:600;color:white;margin-bottom:6px">Sistema activo</div>
-          <p style="font-size:.78rem;color:#6e7681">7–10 días hábiles. IA lista, QR entregados</p>
+          <p style="font-size:.78rem;color:#A8B8C4">7–10 días hábiles. IA lista, QR entregados</p>
         </div>
       </div>
 
