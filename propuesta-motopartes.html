@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Reputación Activa | Motopartes y Equipos Italika × Delta Kilo</title>
+<title>Reputación Activa | Motopartes y Equipos Italika × La Garra</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -897,12 +897,6 @@
               </div>
               <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.3rem;color:#00C8C8" id="mens-total">$1,500/mes</div>
             </div>
-            <div style="background:#161B22;border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center">
-              <div>
-                <div style="font-size:.75rem;color:#A8B8C4">Inversión año 1 (12 meses · implementación sin costo)</div>
-              </div>
-              <div style="font-family:'Rubik',sans-serif;font-weight:700;font-size:1.3rem;color:white" id="anual-total">$18,000</div>
-            </div>
           </div>
         </div>
 
@@ -938,7 +932,7 @@
                 <span style="font-family:'Rubik',sans-serif;font-weight:700;color:#EF4444;font-size:.9rem">~$8,000+/mes</span>
               </div>
               <div style="display:flex;justify-content:space-between;align-items:center">
-                <span style="font-size:.8rem;color:#C0CDD8">Sistema Delta Kilo (<span id="suc-comp">3</span> suc.)</span>
+                <span style="font-size:.8rem;color:#C0CDD8">Sistema La Garra (<span id="suc-comp">3</span> suc.)</span>
                 <span style="font-family:'Rubik',sans-serif;font-weight:700;color:#00C8C8;font-size:.9rem" id="comp-price">$1,500/mes</span>
               </div>
             </div>
@@ -1044,7 +1038,7 @@
             <div style="width:22px;height:22px;border-radius:5px;background:linear-gradient(135deg,#00C8C8,#0EA5E9);display:flex;align-items:center;justify-content:center">
               <svg width="10" height="10" fill="white" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             </div>
-            <span style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.8rem">Delta Kilo <span style="color:#00C8C8">Soluciones</span></span>
+            <span style="font-family:'Rubik',sans-serif;font-weight:700;color:white;font-size:.8rem">La Garra <span style="color:#00C8C8">Soluciones</span></span>
           </div>
         </div>
         <p style="font-family:'Rubik',sans-serif;font-weight:500;font-size:.95rem;color:white;line-height:1.6">
@@ -1110,7 +1104,7 @@ document.addEventListener('keydown',e=>{
 function fmt(n){return'$'+n.toLocaleString('es-MX')}
 function calcUpdate(v){
   v=parseInt(v);
-  const mens=v*500, anual=mens*12;
+  const mens=v*500;
   document.getElementById('suc-num').textContent=v;
   document.getElementById('suc-num2').textContent=v;
   document.getElementById('suc-num3').textContent=v;
@@ -1120,7 +1114,6 @@ function calcUpdate(v){
   document.getElementById('suc-comp').textContent=v;
   document.getElementById('inst-total').textContent='GRATIS';
   document.getElementById('mens-total').textContent=fmt(mens)+'/mes';
-  document.getElementById('anual-total').textContent=fmt(anual);
   document.getElementById('comp-price').textContent=fmt(mens)+'/mes';
   const save=Math.max(0,8000-mens);
   document.getElementById('saving').textContent='~'+fmt(save)+'/mes';
